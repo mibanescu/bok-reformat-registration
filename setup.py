@@ -17,9 +17,6 @@ requires = [
 ]
 
 tests_require = [
-    'WebTest >= 1.3.1',  # py3 compat
-    'pytest >= 3.7.4',
-    'pytest-cov',
 ]
 
 setup(
