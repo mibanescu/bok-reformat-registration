@@ -1,0 +1,11 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+  <form action="/process" method="post" enctype="multipart/form-data">
+    <input type="file" name="csv_file" accept="text/csv">
+    <input type="submit">
+  </form>
+  <h2>beenhere</h2>
+</div>
+{% endblock content %}
