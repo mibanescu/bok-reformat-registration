@@ -13,17 +13,19 @@ class ViewTests(unittest.TestCase):
 
     def test_home(self):
         from registrationcsv.views.default import home
+
         request = testing.DummyRequest()
         info = home(request)
-        self.assertEqual(info['project'], 'registrationcsv')
+        self.assertEqual(info["project"], "registrationcsv")
 
     @mock.patch("registrationcsv.views.default.io")
     @mock.patch("registrationcsv.views.default.reformat.reformat")
     def test_process(self, _reformat, _io):
         from registrationcsv.views.default import process
+
         request = testing.DummyRequest()
         field = mock.MagicMock(filename="foo.csv")
-        request.POST['csv_file'] = field
+        request.POST["csv_file"] = field
         resp = process(request)
         self.assertEqual("text/csv", resp.content_type)
         self.assertEqual("attachment; filename=foo-reformatted.csv", resp.content_disposition)
@@ -31,6 +33,5 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(0, resp.content_length)
         self.assertEqual(_io.StringIO.return_value.getvalue.return_value, resp.body)
 
-        _reformat.assert_called_once_with(_io.TextIOWrapper.return_value,
-                                          _io.StringIO.return_value)
+        _reformat.assert_called_once_with(_io.TextIOWrapper.return_value, _io.StringIO.return_value)
         _io.TextIOWrapper.assert_called_once_with(field.file, encoding="utf-8")

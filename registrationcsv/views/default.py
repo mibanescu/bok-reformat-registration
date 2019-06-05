@@ -1,23 +1,24 @@
+import io
+import logging
+import os
+
 from pyramid.response import Response
 from pyramid.view import view_config
-import logging
-import io
-import os
 
 from .. import reformat
 
 log = logging.getLogger(__name__)
 
 
-@view_config(route_name='home', renderer='../templates/home.jinja2')
+@view_config(route_name="home", renderer="../templates/home.jinja2")
 def home(request):
-    return {'project': 'registrationcsv'}
+    return {"project": "registrationcsv"}
 
 
-@view_config(route_name='process', renderer='')
+@view_config(route_name="process", renderer="")
 def process(request):
     encoding = "utf-8"
-    field = request.POST['csv_file']
+    field = request.POST["csv_file"]
     ftxt = io.TextIOWrapper(field.file, encoding=encoding)
     fout = io.StringIO()
     reformat.reformat(ftxt, fout)
@@ -29,4 +30,5 @@ def process(request):
         content_disposition="attachment; filename={}".format(fname),
         content_encoding=encoding,
         content_length=len(data),
-        body=data)
+        body=data,
+    )
