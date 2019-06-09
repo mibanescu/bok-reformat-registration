@@ -19,8 +19,8 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(info["project"], "registrationcsv")
 
     @mock.patch("registrationcsv.views.default.io")
-    @mock.patch("registrationcsv.views.default.reformat.reformat")
-    def test_process(self, _reformat, _io):
+    @mock.patch("registrationcsv.views.default.Formatter")
+    def test_process(self, _Formatter, _io):
         from registrationcsv.views.default import process
 
         request = testing.DummyRequest()
@@ -33,5 +33,5 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(0, resp.content_length)
         self.assertEqual(_io.StringIO.return_value.getvalue.return_value, resp.body)
 
-        _reformat.assert_called_once_with(_io.TextIOWrapper.return_value, _io.StringIO.return_value)
+        _Formatter.reformat.assert_called_once_with(_io.TextIOWrapper.return_value, _io.StringIO.return_value)
         _io.TextIOWrapper.assert_called_once_with(field.file, encoding="utf-8")

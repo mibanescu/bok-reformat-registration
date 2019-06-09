@@ -5,7 +5,7 @@ import os
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from .. import reformat
+from ..reformat import Formatter
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def process(request):
     field = request.POST["csv_file"]
     ftxt = io.TextIOWrapper(field.file, encoding=encoding)
     fout = io.StringIO()
-    reformat.reformat(ftxt, fout)
+    Formatter.reformat(ftxt, fout)
     data = fout.getvalue()
     basename, extname = os.path.splitext(field.filename)
     fname = "{}-reformatted{}".format(basename, extname)
