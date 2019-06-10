@@ -15,7 +15,8 @@ foo;1"""
         Formatter.reformat(sio, sout)
         self.assertEqual(
             """\
-name,course,start,finish,quantity,more maps,add on,order_total,payment_status,member,comments,cell phone,car license & description,event,order_number\r\n\
+name,course,start,finish,quantity,more maps,add on,order_total,payment_status,\
+member,comments,cell phone,car license & description,event,order_number\r\n\
 ,,,,,,,1,,,,,,foo,\r\n\
 """,
             sout.getvalue(),
