@@ -15,8 +15,9 @@ foo;1"""
         Formatter.reformat(sio, sout)
         self.assertEqual(
             """\
-event,order_total\r\n\
-foo,1\r\n""",
+name,course,start,finish,quantity,more maps,add on,order_total,payment_status,member,comments,cell phone,car license & description,event,order_number\r\n\
+,,,,,,,1,,,,,,foo,\r\n\
+""",
             sout.getvalue(),
         )
 
@@ -48,7 +49,7 @@ BOK members only: sure why not
         f_out = mock.MagicMock()
         Formatter.reformat(f_in, f_out)
 
-        fields = ["event", "name", "z", "g"]
+        fields = Formatter.Field_Order + ["z", "g"]
         _csv.DictWriter.assert_called_once_with(f_out, fields)
         _csv.DictWriter.return_value.writerows.assert_called_once_with(
             [dict(event="event1", z="1", g="blah", name="elmer")]

@@ -11,7 +11,7 @@ def main():
 
 
 class Formatter:
-    Order = [
+    Field_Order = [
         "name",
         "course",
         "start",
@@ -41,12 +41,11 @@ class Formatter:
         for attr in ["quotechar", "escapechar", "doublequote", "skipinitialspace", "quoting"]:
             setattr(dialect, attr, getattr(csv.excel, attr))
         reader = csv.DictReader(fobj, dialect=dialect)
-        fields = ["event", "name", "payment_status", "order_total", "order_number", "quantity", "email"]
-        fields_last = fields[-3:]
+        fields = list(cls.Field_Order)
         fields_set = set(fields)
         rows_out = []
         for row in reader:
-            new_row = {x: row.get(x) for x in fields}
+            new_row = {x: row.get(x) for x in fields if row.get(x)}
             rows_out.append(new_row)
             new_row["event"] = new_row.pop("name")
             options = cls.parse_options(row.get("options"))
@@ -57,16 +56,26 @@ class Formatter:
                 fields.append(opt)
                 fields_set.add(opt)
             new_row.update(options)
-        # Reorder the fields
-        for fname in fields_last:
-            fields.remove(fname)
-        fields.extend(fields_last)
+        fields = cls.reorder_fields(fields)
         rows_out = cls.reorder_rows(rows_out)
-        cls.remove_empty_columns(rows_out, fields)
 
         wr = csv.DictWriter(fout, fields)
         wr.writeheader()
         wr.writerows(rows_out)
+
+    @classmethod
+    def reorder_fields(cls, fields):
+        """
+        Return the prescribed field order, as well as any additional fields
+        """
+        ret = list(cls.Field_Order)
+        existing = set(cls.Field_Order)
+        for fname in fields:
+            if fname in existing:
+                continue
+            ret.append(fname)
+            existing.add(fname)
+        return ret
 
     @classmethod
     def remove_empty_columns(cls, rows_out, fields):
