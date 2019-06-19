@@ -74,11 +74,11 @@ p {
   font-weight: 400;
 }
 .starter-template .links ul li a, a {
-  color: #f2b7bd;
+  color: darkred;
   text-decoration: underline;
 }
 .starter-template .links ul li a:hover, a:hover {
-  color: #ffffff;
+  color: green;
   text-decoration: underline;
 }
 .starter-template .links ul li .icon-muted {
@@ -187,4 +187,22 @@ p {
 
 .timefield {
     width: 75pt;
+}
+
+#form-upload div {
+    clear: left;
+}
+
+#form-upload input {
+    float: left;
+}
+
+#form-upload input[type="submit"] {
+    width: 100pt;
+    margin-top: 2pt;
+    margin-right: 10pt;
+}
+
+.a:link {
+    background-color: green;
 }

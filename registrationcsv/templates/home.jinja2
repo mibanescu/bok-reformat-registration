@@ -3,17 +3,18 @@
 {% block content %}
 <div class="content">
   <div class="description">
-  <p>Upload your CSV file here.</p>
+  <p>Upload your .CSV file from the <a class="reg-a" href="https://backwoodsok.org/wp-admin/admin.php?page=ec-store-admin-orders">BOK Dashboard EcwidStore | MySales | Orders</a></p>
   </div>
-  <form action="/process" method="post" enctype="multipart/form-data">
-    <input type="file" name="csv_file" accept="text/csv">
-    <p>Choose <strong>Display as table</strong> if you want to print the file
-    directly from the browser. You can omit columns by clicking on the button in
-    the heading.</p>
-    <p>Choose <strong>Download as CSV</strong> if you would like to edit the
-    file in a spreadsheet editor (Excel, OpenOffice).</p>
-    <input type="submit" name="return_as_table" value="Display as table">
-    <input type="submit" name="return_as_csv" value="Download as CSV">
+  <form id="form-upload" action="/process" method="post" enctype="multipart/form-data">
+    <input id="form-upload-file" type="file" name="csv_file" accept="text/csv">
+    <div>
+      <input type="submit" name="return_as_table" value="Display as table">
+      <span>To print the file directly or to remove columns, either for printing or for downloading.</span>
+    </div>
+    <div>
+      <input type="submit" name="return_as_csv" value="Download as CSV">
+      <span>To use the file in a spreadsheet editor like OpenOffice or Excel.</span>
+    </div>
   </form>
 </div>
 {% endblock content %}
