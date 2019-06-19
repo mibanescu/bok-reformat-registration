@@ -8,13 +8,13 @@ with open(os.path.join(here, "README.txt")) as f:
 with open(os.path.join(here, "CHANGES.txt")) as f:
     CHANGES = f.read()
 
-requires = ["attr", "plaster_pastedeploy", "pyramid", "pyramid_jinja2", "pyramid_debugtoolbar", "waitress"]
+requires = ["attrs", "plaster_pastedeploy", "pyramid", "pyramid_jinja2", "pyramid_debugtoolbar", "waitress"]
 
 tests_require = []
 
 setup(
     name="registrationcsv",
-    version="0.1",
+    version="0.2",
     description="registrationcsv",
     long_description=README + "\n\n" + CHANGES,
     classifiers=[
