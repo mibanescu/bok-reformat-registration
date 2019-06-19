@@ -50,7 +50,7 @@ BOK members only: sure why not
         f_out = mock.MagicMock()
         Formatter.reformat(f_in, f_out)
 
-        fields = Formatter.Field_Order + ["z", "g"]
+        fields = [x.name for x in Formatter.Field_Order] + ["z", "g"]
         _csv.DictWriter.assert_called_once_with(f_out, fields)
         _csv.DictWriter.return_value.writerows.assert_called_once_with(
             [dict(event="event1", z="1", g="blah", name="elmer")]

@@ -2,8 +2,8 @@ import io
 import logging
 import os
 
-from pyramid.response import Response
 from pyramid.renderers import render_to_response
+from pyramid.response import Response
 from pyramid.view import view_config
 
 from ..reformat import Formatter
@@ -39,6 +39,4 @@ def process(request):
 
 def process_as_table(request, fobj):
     rows, fields = Formatter.csv_to_rows(fobj)
-    return render_to_response("../templates/as_table.jinja2",
-                              dict(fields=fields, rows=rows),
-                              request=request)
+    return render_to_response("../templates/as_table.jinja2", dict(fields=fields, rows=rows), request=request)

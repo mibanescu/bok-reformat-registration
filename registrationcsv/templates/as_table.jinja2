@@ -5,14 +5,14 @@
   <table id="id_table_rf" class="table">
     <colgroup>
     {% for i in range(fields|count) %}
-      <col id="id_col_{{ i }}">
+      <col id="id_col_{{ i }}"{%if fields[i].css_class %} class="{{ fields[i].css_class }}"{% endif %}>
     {% endfor %}
     </colgroup>
     <thead>
       <tr>
         {% for i in range(fields|count) %}
         <th><button class="col-button" id="id_button_{{ i }}" onClick="hide_column({{ i }})">X</button>
-        <div>{{ fields[i] }}</div></th>
+        <div>{{ fields[i].display or fields[i].name }}</div></th>
         {% endfor %}
       </tr>
     </thead>
@@ -20,7 +20,7 @@
       {% for row in rows %}
       <tr>
         {% for field in fields %}
-          <td>{{ row[field] }}</td>
+          <td>{{ row[field.name] }}</td>
         {% endfor %}
       </tr>
       {% endfor %}

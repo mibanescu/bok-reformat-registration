@@ -2,8 +2,9 @@
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
-  color: #ffffff;
-  background: #bc2131;
+  font-size: small;
+  color: black;
+  background: white;
 }
 h1,
 h2,
@@ -175,4 +176,15 @@ p {
 .col-button {
     color: black;
     border-radius: 40%;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+}
+
+.col-button:hover {
+    background-color: red;
+    color: white;
+}
+
+.timefield {
+    width: 75pt;
 }

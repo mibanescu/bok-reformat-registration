@@ -1,6 +1,8 @@
 import csv
 import sys
 
+import attr
+
 
 def main():
     if len(sys.argv) < 2:
@@ -10,30 +12,37 @@ def main():
     Formatter.reformat(fobj, sys.stdout)
 
 
+@attr.s
+class Field:
+    name = attr.ib()
+    display = attr.ib(default=None)
+    css_class = attr.ib(default=None)
+
+
 class Formatter:
     Field_Order = [
-        "name",
-        "course",
-        "start",
-        "finish",
-        "quantity",
-        "more maps",
-        "add on",
-        "order_total",
-        "payment_status",
-        "member",
-        "comments",
-        "cell phone",
-        "car license & description",
-        "event",
-        "order_number",
+        Field("name"),
+        Field("course"),
+        Field("start", css_class="timefield"),
+        Field("finish", css_class="timefield"),
+        Field("quantity"),
+        Field("more maps"),
+        Field("add on"),
+        Field("order_total", display="order total"),
+        Field("payment_status", display="payment status"),
+        Field("member"),
+        Field("comments"),
+        Field("cell phone"),
+        Field("car license & description"),
+        Field("event"),
+        Field("order_number", display="order#"),
     ]
 
     @classmethod
     def reformat(cls, fobj, fout):
         rows_out, fields = cls.csv_to_rows(fobj)
 
-        wr = csv.DictWriter(fout, fields)
+        wr = csv.DictWriter(fout, [x.name for x in fields])
         wr.writeheader()
         wr.writerows(rows_out)
 
@@ -46,8 +55,8 @@ class Formatter:
         fobj.seek(0)
 
         # Preserve the excel attributes
-        for attr in ["quotechar", "escapechar", "doublequote", "skipinitialspace", "quoting"]:
-            setattr(dialect, attr, getattr(csv.excel, attr))
+        for attr_name in ["quotechar", "escapechar", "doublequote", "skipinitialspace", "quoting"]:
+            setattr(dialect, attr_name, getattr(csv.excel, attr_name))
         reader = csv.DictReader(fobj, dialect=dialect)
         return reader
 
@@ -55,10 +64,10 @@ class Formatter:
     def csv_to_rows(cls, fobj):
         reader = cls.open_csv(fobj)
         fields = list(cls.Field_Order)
-        fields_set = set(fields)
+        fields_set = set(x.name for x in fields)
         rows_out = []
         for row in reader:
-            new_row = {x: row.get(x) for x in fields if row.get(x)}
+            new_row = {x.name: row.get(x.name) for x in fields if row.get(x.name)}
             rows_out.append(new_row)
             new_row["event"] = new_row.pop("name")
             options = cls.parse_options(row.get("options"))
@@ -66,7 +75,7 @@ class Formatter:
             for opt in options:
                 if opt in fields_set:
                     continue
-                fields.append(opt)
+                fields.append(Field(opt))
                 fields_set.add(opt)
             new_row.update(options)
         fields = cls.reorder_fields(fields)
@@ -79,12 +88,12 @@ class Formatter:
         Return the prescribed field order, as well as any additional fields
         """
         ret = list(cls.Field_Order)
-        existing = set(cls.Field_Order)
-        for fname in fields:
-            if fname in existing:
+        existing = set(x.name for x in cls.Field_Order)
+        for field in fields:
+            if field.name in existing:
                 continue
-            ret.append(fname)
-            existing.add(fname)
+            ret.append(field)
+            existing.add(field.name)
         return ret
 
     @classmethod
