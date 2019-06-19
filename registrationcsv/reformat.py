@@ -31,6 +31,14 @@ class Formatter:
 
     @classmethod
     def reformat(cls, fobj, fout):
+        rows_out, fields = cls.csv_to_rows(fobj)
+
+        wr = csv.DictWriter(fout, fields)
+        wr.writeheader()
+        wr.writerows(rows_out)
+
+    @classmethod
+    def open_csv(cls, fobj):
         sniffer = csv.Sniffer()
         dialect = sniffer.sniff(next(iter(fobj)))
         if not dialect:
@@ -41,6 +49,11 @@ class Formatter:
         for attr in ["quotechar", "escapechar", "doublequote", "skipinitialspace", "quoting"]:
             setattr(dialect, attr, getattr(csv.excel, attr))
         reader = csv.DictReader(fobj, dialect=dialect)
+        return reader
+
+    @classmethod
+    def csv_to_rows(cls, fobj):
+        reader = cls.open_csv(fobj)
         fields = list(cls.Field_Order)
         fields_set = set(fields)
         rows_out = []
@@ -58,10 +71,7 @@ class Formatter:
             new_row.update(options)
         fields = cls.reorder_fields(fields)
         rows_out = cls.reorder_rows(rows_out)
-
-        wr = csv.DictWriter(fout, fields)
-        wr.writeheader()
-        wr.writerows(rows_out)
+        return rows_out, fields
 
     @classmethod
     def reorder_fields(cls, fields):

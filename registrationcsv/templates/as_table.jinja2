@@ -1,0 +1,40 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+  <table id="id_table_rf" class="table">
+    <colgroup>
+    {% for i in range(fields|count) %}
+      <col id="id_col_{{ i }}">
+    {% endfor %}
+    </colgroup>
+    <thead>
+      <tr>
+        {% for i in range(fields|count) %}
+        <th><button class="col-button" id="id_button_{{ i }}" onClick="hide_column({{ i }})">X</button>
+        <div>{{ fields[i] }}</div></th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        {% for field in fields %}
+          <td>{{ row[field] }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+function hide_column(col_no) {
+    var rows = document.getElementById("id_table_rf").rows;
+    for (var row = 0; row < rows.length; row++) {
+        var cols = rows[row].cells;
+        cols[col_no].style.display = "none";
+    }
+}
+</script>
+{% endblock content %}

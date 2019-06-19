@@ -152,3 +152,27 @@ p {
     margin-top: 20px;
   }
 }
+
+@media print {
+    .col-button {
+        display: none;
+    }
+}
+
+#id_table_rf {
+    border: 1px solid black;
+    width: 100%;
+}
+
+#id_table_rf th, td {
+    border: 1px solid black;
+}
+
+#id_table_rf th {
+    text-align: center;
+}
+
+.col-button {
+    color: black;
+    border-radius: 40%;
+}

@@ -4,7 +4,8 @@
 <div class="content">
   <form action="/process" method="post" enctype="multipart/form-data">
     <input type="file" name="csv_file" accept="text/csv">
-    <input type="submit">
+    <input type="submit" name="return_as_csv" value="Download as CSV">
+    <input type="submit" name="return_as_table" value="Display as table">
   </form>
 </div>
 {% endblock content %}
