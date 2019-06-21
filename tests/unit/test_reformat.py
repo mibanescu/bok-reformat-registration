@@ -16,8 +16,8 @@ foo;1"""
         self.assertEqual(
             """\
 name,course,start,finish,quantity,more maps,add on,order_total,payment_status,\
-member,comments,cell phone,car license & description,event,order_number\r\n\
-,,,,,,,1,,,,,,foo,\r\n\
+member,comments,cell phone,car license & description,event,order_number,email\r\n\
+,,,,,,,1,,,,,,foo,,\r\n\
 """,
             sout.getvalue(),
         )

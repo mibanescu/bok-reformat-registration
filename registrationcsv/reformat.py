@@ -36,6 +36,7 @@ class Formatter:
         Field("car license & description"),
         Field("event"),
         Field("order_number", display="order#"),
+        Field("email"),
     ]
 
     @classmethod
