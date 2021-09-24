@@ -23,8 +23,6 @@ class Formatter:
     Field_Order = [
         Field("name"),
         Field("course"),
-        Field("start", css_class="timefield"),
-        Field("finish", css_class="timefield"),
         Field("quantity"),
         Field("more maps"),
         Field("add on"),
