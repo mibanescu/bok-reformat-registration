@@ -62,6 +62,12 @@ class Formatter:
         return reader
 
     @classmethod
+    def _strip_after_separator(cls, *, sep="~", value):
+        if value is None:
+            return None
+        return value.partition(sep)[0].strip()
+
+    @classmethod
     def csv_to_rows(cls, fobj):
         reader = cls.open_csv(fobj)
         fields = list(cls.Field_Order)
@@ -116,8 +122,8 @@ class Formatter:
             k, sep, v = row.partition(":")
             if not v:
                 continue
-            k = k.strip().lower()
-            v = v.strip()
+            k = cls._strip_after_separator(value=k).lower()
+            v = cls._strip_after_separator(value=v)
             if "members only" in k:
                 k = "member"
                 v = "1" if v else None

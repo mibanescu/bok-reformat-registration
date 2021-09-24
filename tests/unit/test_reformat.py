@@ -39,8 +39,10 @@ member,comments,cell phone,car license & description,event,order_number,email\r\
 A: a1
 b: b1
 BOK members only: sure why not
+Finger stick ~ every person starting on the course needs one: Rent ~ I don't own one and will rent
 """
-        self.assertEqual({"a": "a1", "b": "b1", "member": "1"}, Formatter.parse_options(data))
+        self.assertEqual({"a": "a1", "b": "b1", "member": "1",
+                          "finger stick": "Rent"}, Formatter.parse_options(data))
 
     @mock.patch("registrationcsv.reformat.csv")
     def test_parse_data(self, _csv):
