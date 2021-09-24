@@ -14,7 +14,7 @@ tests_require = []
 
 setup(
     name="registrationcsv",
-    version="0.3",
+    version="0.4",
     description="registrationcsv",
     long_description=README + "\n\n" + CHANGES,
     classifiers=[
