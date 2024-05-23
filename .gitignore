@@ -3,10 +3,11 @@
 *.pyc
 *$py.class
 *~
-.coverage
+.coverage*
 coverage.xml
 build/
 dist/
+.eggs
 .tox/
 nosetests.xml
 env*/
