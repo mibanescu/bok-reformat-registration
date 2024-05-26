@@ -1,11 +1,25 @@
+import csv
 import io
+import os
 import unittest
+from pathlib import Path
 from unittest import mock
 
-from registrationcsv.reformat import Formatter
+from registrationcsv.reformat import Formatter, RowCollector
+
+_top = os.path.dirname(__file__)
 
 
 class Test(unittest.TestCase):
+    @classmethod
+    def open_file(cls, file_name):
+        d = Path(_top) / ".." / "fixtures"
+        return open(d / file_name)
+
+    @classmethod
+    def read_csv(cls, fin):
+        return csv.DictReader(fin)
+
     def test_sniff(self):
         data_in = """\
 name;order_total
@@ -17,7 +31,7 @@ foo;1"""
             """\
 name,course,quantity,more maps,add on,order_total,payment_status,\
 member,comments,cell phone,car license & description,event,order_number,email\r\n\
-,,,,,1,,,,,,foo,,\r\n\
+foo,,,,,1,,,,,,,,\r\n\
 """,
             sout.getvalue(),
         )
@@ -41,7 +55,28 @@ b: b1
 BOK members only: sure why not
 Finger stick ~ every person starting on the course needs one: Rent ~ I don't own one and will rent
 """
-        self.assertEqual({"a": "a1", "b": "b1", "member": "1", "finger stick": "Rent"}, Formatter.parse_options(data))
+        self.assertEqual({"a": "a1", "b": "b1", "member": "1", "finger stick": "Rent"},
+                         RowCollector.parse_options(data))
+
+    def test_multicourse_all(self):
+        sout = io.StringIO()
+        with self.open_file("example1_all.csv") as f:
+            Formatter.reformat(f, sout)
+        sout.seek(0, 0)
+
+        exp_courses = ["E", "S2"]
+        for i, row in enumerate(self.read_csv(sout)):
+            self.assertEqual(row["course"], exp_courses[i])
+
+    def test_multicourse_expanded(self):
+        sout = io.StringIO()
+        with self.open_file("example1_expanded.csv") as f:
+            Formatter.reformat(f, sout)
+        sout.seek(0, 0)
+
+        exp_courses = ["E", "S2"]
+        for i, row in enumerate(self.read_csv(sout)):
+            self.assertEqual(row["course"], exp_courses[i])
 
     @mock.patch("registrationcsv.reformat.csv")
     def test_parse_data(self, _csv):

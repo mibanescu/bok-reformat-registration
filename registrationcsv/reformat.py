@@ -60,31 +60,13 @@ class Formatter:
         return reader
 
     @classmethod
-    def _strip_after_separator(cls, *, sep="~", value):
-        if value is None:
-            return None
-        return value.partition(sep)[0].strip()
-
-    @classmethod
     def csv_to_rows(cls, fobj):
         reader = cls.open_csv(fobj)
-        fields = list(cls.Field_Order)
-        fields_set = set(x.name for x in fields)
-        rows_out = []
+        coll = RowCollector(list(cls.Field_Order))
         for row in reader:
-            new_row = {x.name: row.get(x.name) for x in fields if row.get(x.name)}
-            rows_out.append(new_row)
-            new_row["event"] = new_row.pop("name")
-            options = cls.parse_options(row.get("options"))
-            # Add fields if necessary; hope for an ordered dict
-            for opt in options:
-                if opt in fields_set:
-                    continue
-                fields.append(Field(opt))
-                fields_set.add(opt)
-            new_row.update(options)
-        fields = cls.reorder_fields(fields)
-        rows_out = cls.reorder_rows(rows_out)
+            coll.process(row)
+        fields = cls.reorder_fields(coll.fields)
+        rows_out = cls.reorder_rows(coll.rows)
         return rows_out, fields
 
     @classmethod
@@ -111,6 +93,35 @@ class Formatter:
                 row.pop(fname, None)
 
     @classmethod
+    def reorder_rows(cls, rows_out):
+        rows_out = rows_out[:]
+        for fname in ["name", "course", "event"]:
+            rows_out.sort(key=lambda x: x.get(fname) or "")
+        return rows_out
+
+
+class RowCollector:
+    def __init__(self, fields):
+        self.fields = fields
+        self.fields_set = set(x.name for x in fields)
+        self.rows = []
+
+    def process(self, row):
+        if "options" in row:
+            return self._process_unexpanded(row)
+        self._process_expanded(row)
+
+    def _process_unexpanded(self, row):
+        new_row = {x.name: row.get(x.name) for x in self.fields if row.get(x.name)}
+        new_row["event"] = new_row.pop("name")
+        options = self.parse_options(row.get("options"))
+        # Add fields if necessary; hope for an ordered dict
+        for opt in options:
+            self._record_field(opt)
+        new_row.update(options)
+        self.rows.append(new_row)
+
+    @classmethod
     def parse_options(cls, strobj):
         kv = {}
         if not strobj:
@@ -128,12 +139,27 @@ class Formatter:
             kv[k] = v
         return kv
 
+    def _process_expanded(self, row):
+        new_row = {}
+        for k, v in row.items():
+            k = self._strip_after_separator(value=k).lower()
+            v = self._strip_after_separator(value=v)
+            new_row[k] = v
+            self._record_field(k)
+
+        self.rows.append(new_row)
+
+    def _record_field(self, f):
+        if f in self.fields_set:
+            return
+        self.fields.append(Field(f))
+        self.fields_set.add(f)
+
     @classmethod
-    def reorder_rows(cls, rows_out):
-        rows_out = rows_out[:]
-        for fname in ["name", "course", "event"]:
-            rows_out.sort(key=lambda x: x.get(fname) or "")
-        return rows_out
+    def _strip_after_separator(cls, *, sep="~", value):
+        if value is None:
+            return None
+        return value.partition(sep)[0].strip()
 
 
 if __name__ == "__main__":
