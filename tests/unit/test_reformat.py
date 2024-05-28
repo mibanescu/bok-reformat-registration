@@ -29,9 +29,8 @@ foo;1"""
         Formatter.reformat(sio, sout)
         self.assertEqual(
             """\
-name,course,quantity,more maps,add on,order_total,payment_status,\
-member,comments,cell phone,car license & description,event,order_number,email\r\n\
-foo,,,,,1,,,,,,,,\r\n\
+name,order_total\r\n\
+foo,1\r\n\
 """,
             sout.getvalue(),
         )
@@ -74,9 +73,62 @@ Finger stick ~ every person starting on the course needs one: Rent ~ I don't own
             Formatter.reformat(f, sout)
         sout.seek(0, 0)
 
-        exp_courses = ["E", "S2"]
+        exp_rows = [
+            {
+                'name': 'Boyse',
+                'cell phone': '987',
+                'entry': 'Pay',
+                'stick': 'Rent',
+                'stick number': '87654',
+                'receiver': 'Rent',
+                'whistles': '2',
+                'maps': '2',
+                'thumb compass': 'Borrow',
+                'other adults': 'Ruth',
+                'children': 'Puppies',
+                'email address': 'Dog House',
+                'car': 'Dog Sled',
+                'signature': 'Paw',
+                'guardian': 'Kiwi',
+                'other signature': '',
+                'S2': '3',
+                'R': '3',
+                'DT': '3',
+                'DM': '3',
+                'E': '',
+                'L1': '',
+                'L2': '',
+                'S1': '',
+            },
+            {
+               'name': 'Joseph',
+               'cell phone': '999-087-8779',
+               'entry': 'Pass',
+               'stick': 'Have',
+               'stick number': '887665',
+               'receiver': 'Have',
+               'whistles': 'Have',
+               'maps': '0',
+               'thumb compass': 'Have',
+               'other adults': 'Kiwi',
+               'children': 'Boyse',
+               'email address': 'test@test.com',
+               'car': '98uy6',
+               'signature': 'JGH',
+               'guardian': 'Ruth',
+               'other signature': 'KH',
+               'S2': '',
+               'R': '',
+               'DT': '',
+               'DM': '',
+               'E': '1',
+               'L1': '1',
+               'L2': '1',
+               'S1': '1',
+           },
+        ]
         for i, row in enumerate(self.read_csv(sout)):
-            self.assertEqual(row["course"], exp_courses[i])
+            self.assertEqual(row, exp_rows[i])
 
     @mock.patch("registrationcsv.reformat.csv")
     def test_parse_data(self, _csv):

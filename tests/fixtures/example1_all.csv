@@ -1,0 +1,35 @@
+order_number,email,sku,name,weight,price,total,quantity,options,tax_details,customer_tax_exempt,customer_tax_id,reversed_tax_applied,timestamp,shipto_person_name,shipto_person_street_1,shipto_person_street_2,shipto_person_city,shipto_person_country_code,shipto_person_postal_code,shipto_person_state_code,shipto_person_country_name,shipto_person_state_name,shipto_person_phone,bill_person_name,bill_person_street_1,bill_person_street_2,bill_person_city,bill_person_country_code,bill_person_postal_code,bill_person_state_code,bill_person_country_name,bill_person_state_name,bill_person_phone,customer_group,payment_method,shipping_method,payment_status,fulfillment_status,payment_status_code,fulfillment_status_code,order_subtotal,order_tax,order_shipping,order_handling_fee,order_total,order_tracking_number,coupon_code,coupon_discount,volume_discount,detail_discount,discount,order_weight,order_comments,affiliate_id,utm_source,utm_medium,utm_campaign,customer_ipaddress,note_for_staff,accept_marketing,referer_id,gift_card_redemption,masked_gift_card_code,payment_transaction_id,tips,surcharges
+4919,joseph@treklite.com,"9999Test",Test Event,0.00,23.00,23.00,1,"Name:Boyse
+Course:S2~Short Sprint 2, R~Radio-O Sprint, DT~Dog Trail, DM~Dog Map
+Entry~Entry Fee / Annual Pass:Pay~Pay for this Event
+Stick~Rent a Finger Stick (Each ENTRY needs a Finger Stick):Rent~I will rent a Finger Stick
+Stick Number~ My Finger Stick number is::87654
+Receiver~Rent a Radio-O Receiver (Only necessary for Radio-O course - bring your own headphone):Rent~Rent a Radio-O Receiver
+Whistles~ How many do you need?  (Each PERSON must carry a whistle):2
+Maps~One map comes with your entry. Select how many Extra Maps you need. (Everyone going with you should have their own map.):2
+Thumb Compass:Borrow~I would like to borrow a Thumb Compass
+Other Adults~ Other adults with you on the course. Maximum of 2 other adults on one entry.  (They must also sign the Waiver.  If they are not avialble now they can find the Waiver in the store and sign it there.):Ruth
+Children~ Children with you on the course.  (A Parent or Guardian must sign the waiver shown below for accompanying minors.):Puppies
+Cell Phone:987
+Email address:Dog House
+Car~ Car License & Description:Dog Sled
+Signature~ Type your signature to accept the Waiver of Responsibility:Paw
+Guardian~ Legal guardian waiver signature for above listed minors.:Kiwi
+Other Signature~Waiver signature of other adults with you on the course.:",,false,,false,"May 23, 2024 08:28 AM",,,,,,,,,,,Joseph Huberman,904 Dorothea Dr,,Raleigh,US,27603,NC,United States,North Carolina,,,,,Paid,Awaiting Processing,ACCEPTED,NEW,23.00,0.00,0.00,0.00,0.00,,FVOOHOSPKKML,23.00,0.00,volume_discount:0.00;customer_group_discount:0.00;customer_group_volume_discount:0.00,23.00,0.0,,,,,,174.99.11.70,,false,,0.00,,,,
+4918,joseph@treklite.com,"9999Test",Test Event,0.00,0.00,0.00,1,"Name:Joseph
+Course:E~Explorer Course, L1~Long Sprint 1, L2~Long Sprint 2, S1~Short Sprint 1
+Entry~Entry Fee / Annual Pass:Pass~I have a BOK Annual Pass
+Stick~Rent a Finger Stick (Each ENTRY needs a Finger Stick):Have~I have a Finger stick
+Stick Number~ My Finger Stick number is::887665
+Receiver~Rent a Radio-O Receiver (Only necessary for Radio-O course - bring your own headphone):Have~I have a receiver or not doing Radio-O
+Whistles~ How many do you need?  (Each PERSON must carry a whistle):Have~I already have my whistle
+Maps~One map comes with your entry. Select how many Extra Maps you need. (Everyone going with you should have their own map.):0
+Thumb Compass:Have~I have my own compass
+Other Adults~ Other adults with you on the course. Maximum of 2 other adults on one entry.  (They must also sign the Waiver.  If they are not avialble now they can find the Waiver in the store and sign it there.):Kiwi
+Children~ Children with you on the course.  (A Parent or Guardian must sign the waiver shown below for accompanying minors.):Boyse
+Cell Phone:999-087-8779
+Email address:test@test.com
+Car~ Car License & Description:98uy6
+Signature~ Type your signature to accept the Waiver of Responsibility:JGH
+Guardian~ Legal guardian waiver signature for above listed minors.:Ruth
+Other Signature~Waiver signature of other adults with you on the course.:KH",,false,,false,"May 23, 2024 08:12 AM",,,,,,,,,,,Joseph Huberman,904 Dorothea Dr,,Raleigh,US,27603,NC,United States,North Carolina,,,,,Paid,Awaiting Processing,ACCEPTED,NEW,0.00,0.00,0.00,0.00,0.00,,,0.00,0.00,volume_discount:0.00;customer_group_discount:0.00;customer_group_volume_discount:0.00,0.00,0.0,,,,,,174.99.11.70,,false,,0.00,,,,

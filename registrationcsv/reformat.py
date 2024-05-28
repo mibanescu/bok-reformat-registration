@@ -74,14 +74,17 @@ class Formatter:
         """
         Return the prescribed field order, as well as any additional fields
         """
-        ret = list(cls.Field_Order)
-        existing = set(x.name for x in cls.Field_Order)
+        predef_order = {x.name: i for i, x in enumerate(cls.Field_Order)}
+
+        actual_order = {}
         for field in fields:
-            if field.name in existing:
-                continue
-            ret.append(field)
-            existing.add(field.name)
-        return ret
+            rank = predef_order.get(field.name, None)
+            if rank is None:
+                rank = len(predef_order)
+                predef_order[field.name] = rank
+            actual_order[rank] = field
+        l = sorted(actual_order.items(), key=lambda x: x[0])
+        return [x[1] for x in l]
 
     @classmethod
     def remove_empty_columns(cls, rows_out, fields):
@@ -139,15 +142,45 @@ class RowCollector:
             kv[k] = v
         return kv
 
+    def reset(self):
+        self.fields = []
+        self.fields_set.clear()
+
     def _process_expanded(self, row):
+        if len(self.rows) == 0:
+            self.reset()
         new_row = {}
+        courses = ""
         for k, v in row.items():
             k = self._strip_after_separator(value=k).lower()
+            if k == "course":
+                courses = v
+                continue
             v = self._strip_after_separator(value=v)
             new_row[k] = v
             self._record_field(k)
 
+        map_count = self._get_map_count(new_row)
+        courses = (self._strip_after_separator(value=x.strip())
+                   for x in courses.split(","))
+        for course in courses:
+            if course == "":
+                continue
+            new_row[course] = map_count
+            self._record_field(course)
+
         self.rows.append(new_row)
+
+    def _get_map_count(self, row):
+        map_count = row.get("maps", "")
+        if map_count == "":
+            return 1
+
+        try:
+            map_count = int(map_count)
+        except ValueError:
+            return 1
+        return 1 + map_count
 
     def _record_field(self, f):
         if f in self.fields_set:
