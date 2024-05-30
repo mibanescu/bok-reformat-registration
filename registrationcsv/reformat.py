@@ -65,26 +65,9 @@ class Formatter:
         coll = RowCollector(list(cls.Field_Order))
         for row in reader:
             coll.process(row)
-        fields = cls.reorder_fields(coll.fields)
+        fields = coll.reorder_fields()
         rows_out = cls.reorder_rows(coll.rows)
         return rows_out, fields
-
-    @classmethod
-    def reorder_fields(cls, fields):
-        """
-        Return the prescribed field order, as well as any additional fields
-        """
-        predef_order = {x.name: i for i, x in enumerate(cls.Field_Order)}
-
-        actual_order = {}
-        for field in fields:
-            rank = predef_order.get(field.name, None)
-            if rank is None:
-                rank = len(predef_order)
-                predef_order[field.name] = rank
-            actual_order[rank] = field
-        l = sorted(actual_order.items(), key=lambda x: x[0])
-        return [x[1] for x in l]
 
     @classmethod
     def remove_empty_columns(cls, rows_out, fields):
@@ -107,7 +90,10 @@ class RowCollector:
     def __init__(self, fields):
         self.fields = fields
         self.fields_set = set(x.name for x in fields)
+        self.course_cols = []
+        self.course_cols_set = set()
         self.rows = []
+        self.sku = None
 
     def process(self, row):
         if "options" in row:
@@ -145,6 +131,9 @@ class RowCollector:
     def reset(self):
         self.fields = []
         self.fields_set.clear()
+        self.course_cols = []
+        self.course_cols_set.clear()
+        self.sku = None
 
     def _process_expanded(self, row):
         if len(self.rows) == 0:
@@ -159,6 +148,13 @@ class RowCollector:
             v = self._strip_after_separator(value=v)
             new_row[k] = v
             self._record_field(k)
+        sku = new_row.get("sku")
+        if self.sku == None:
+            self.sku = sku
+        else:
+            if self.sku != sku:
+                # Different sku. Ignore this row
+                return
 
         map_count = self._get_map_count(new_row)
         courses = (self._strip_after_separator(value=x.strip())
@@ -167,7 +163,7 @@ class RowCollector:
             if course == "":
                 continue
             new_row[course] = map_count
-            self._record_field(course)
+            self._record_course(course)
 
         self.rows.append(new_row)
 
@@ -188,11 +184,36 @@ class RowCollector:
         self.fields.append(Field(f))
         self.fields_set.add(f)
 
+    def _record_course(self, f):
+        if f in self.course_cols_set:
+            return
+        self.course_cols.append(Field(f))
+        self.course_cols_set.add(f)
+
     @classmethod
     def _strip_after_separator(cls, *, sep="~", value):
         if value is None:
             return None
         return value.partition(sep)[0].strip()
+
+    def reorder_fields(self):
+        """
+        Return the prescribed field order, as well as any additional fields
+        """
+        predef_order = {x.name: i for i, x in enumerate(Formatter.Field_Order)}
+
+        actual_order = {}
+        for field in self.fields:
+            rank = predef_order.get(field.name, None)
+            if rank is None:
+                rank = len(predef_order)
+                predef_order[field.name] = rank
+            actual_order[rank] = field
+        course_cols = sorted(self.course_cols, key=lambda x: x.name)
+        flist = sorted(actual_order.items(), key=lambda x: x[0])
+        fnames = [x[1] for x in flist]
+        fnames[1:1] = (x for x in course_cols)
+        return fnames
 
 
 if __name__ == "__main__":

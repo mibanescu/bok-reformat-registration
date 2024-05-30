@@ -35,6 +35,24 @@ foo,1\r\n\
             sout.getvalue(),
         )
 
+    def test_sku_filtering(self):
+        data_in = """\
+name;order_total;sku
+foo;1;sku1
+bar;2;sku1
+nope;3;sku2"""
+        sio = io.StringIO(data_in)
+        sout = io.StringIO()
+        Formatter.reformat(sio, sout)
+        self.assertEqual(
+            """\
+name,order_total,sku\r\n\
+bar,2,sku1\r\n\
+foo,1,sku1\r\n\
+""",
+            sout.getvalue(),
+        )
+
     def test_reorder_rows(self):
         data = [
             dict(name="n1", course="c", event="e1"),
@@ -129,6 +147,33 @@ Finger stick ~ every person starting on the course needs one: Rent ~ I don't own
         ]
         for i, row in enumerate(self.read_csv(sout)):
             self.assertEqual(row, exp_rows[i])
+        ordered_cols = list(row.keys())
+        self.assertEquals(ordered_cols, [
+            'name',
+            'DM',
+            'DT',
+            'E',
+            'L1',
+            'L2',
+            'R',
+            'S1',
+            'S2',
+            'cell phone',
+            'entry',
+            'stick',
+            'stick number',
+            'receiver',
+            'whistles',
+            'maps',
+            'thumb compass',
+            'other adults',
+            'children',
+            'email address',
+            'car',
+            'signature',
+            'guardian',
+            'other signature',
+        ])
 
     @mock.patch("registrationcsv.reformat.csv")
     def test_parse_data(self, _csv):
