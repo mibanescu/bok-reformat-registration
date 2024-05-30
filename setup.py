@@ -8,7 +8,7 @@ with open(os.path.join(here, "README.txt")) as f:
 with open(os.path.join(here, "CHANGES.txt")) as f:
     CHANGES = f.read()
 
-requires = ["attrs", "plaster_pastedeploy", "pyramid", "pyramid_jinja2", "pyramid_debugtoolbar", "waitress"]
+requires = ["attrs", "flup", "plaster_pastedeploy", "pyramid", "pyramid_jinja2", "pyramid_debugtoolbar", "waitress"]
 
 tests_require = []
 
